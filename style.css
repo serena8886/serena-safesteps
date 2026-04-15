@@ -1,0 +1,875 @@
+/*--------------------------------------------------------------------
+APPLE MINIMAL — VARIABLES
+
+Global CSS variables used across the UI.
+These define the color palette, shadows, spacing, and radii so the
+entire interface maintains a consistent Apple-style design language.
+
+Changing values here updates the entire UI theme.
+--------------------------------------------------------------------*/
+:root {
+  --nav-h: 0px;
+  --blue: #007aff;
+  --blue-light: #e8f1ff;
+  --green: #34c759;
+  --red: #ff3b30;
+  --label: #1d1d1f;
+  --secondary: #6e6e73;
+  --tertiary: #aeaeb2;
+  --separator: #e5e5ea;
+  --bg: rgba(255, 255, 255, 0.92);
+  --card-radius: 14px;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 24px rgba(0, 0, 0, 0.11);
+}
+
+/*--------------------------------------------------------------------
+MAP
+
+Full-screen map container.
+Positioned absolutely so the map fills the entire viewport except
+for the navigation bar height.
+--------------------------------------------------------------------*/
+.map {
+  position: absolute;
+  top: var(--nav-h);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+/*--------------------------------------------------------------------
+CONTROLS — left panel
+
+Main control panel that contains search, filters, landmarks,
+legend, and risk settings.
+
+Positioned on the left side of the map and scrollable when
+content exceeds screen height.
+--------------------------------------------------------------------*/
+#controls {
+  position: absolute;
+  top: calc(var(--nav-h) + 12px);
+  left: 12px;
+  width: 316px;
+  max-height: calc(100vh - var(--nav-h) - 24px);
+  overflow-y: auto;
+  overflow-x: visible;
+  z-index: 10;
+  scrollbar-width: none;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+#controls::-webkit-scrollbar {
+  display: none;
+}
+
+/* Shared card style used for most UI panels such as
+   filters, legends, search sections, etc.
+
+Creates the frosted glass Apple-like interface effect. */
+.panel-card {
+  background: var(--bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--separator);
+  box-shadow: var(--shadow);
+  padding: 12px 14px;
+  margin-top: 8px;
+}
+
+/* Section label */
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 10px;
+}
+
+/* Divider between sections */
+.panel-divider {
+  border: none;
+  border-top: 1px solid var(--separator);
+  margin: 10px 0;
+}
+
+/*--------------------------------------------------------------------
+Search card
+
+Container that holds the start and end location inputs
+(Mapbox geocoder instances).
+
+Includes visual indicators, input fields, and route controls.
+--------------------------------------------------------------------*/
+#search-card {
+  background: var(--bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--separator);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  gap: 10px;
+  position: relative;
+  z-index: 100;
+  overflow: visible;
+}
+
+/* Icons column: vertical stack of visual indicators for start/middle/end */
+#search-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  padding: 4px 0;
+}
+
+/* Simple circle for start point, pin for end point, and dots for waypoints */
+#icon-circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--blue);
+  display: block;
+}
+
+/* Dots for waypoints: using text with letter-spacing to create evenly spaced dots that scale well */
+#icon-dots {
+  font-size: 13px;
+  color: var(--tertiary);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+/* Pin for end point: using text to allow for easy color and size adjustments while maintaining sharpness */
+#icon-pin {
+  font-size: 13px;
+  color: var(--red);
+  line-height: 1;
+}
+
+/* Inputs column: contains the Mapbox geocoder inputs for start and end locations, stacked vertically */
+#search-inputs {
+  flex: 1;
+  min-width: 0;
+}
+
+#geocoder-start {
+  position: relative;
+  z-index: 2;
+}
+#geocoder-end {
+  position: relative;
+  z-index: 1;
+}
+
+/* Custom styles to better integrate Mapbox geocoder into our design, and to fix z-index issues with the suggestions dropdown */
+#geocoder-start .mapboxgl-ctrl-geocoder,
+#geocoder-end .mapboxgl-ctrl-geocoder {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  box-shadow: none;
+  background: transparent;
+  overflow: visible;
+}
+
+#geocoder-start .mapboxgl-ctrl-geocoder--icon-search,
+#geocoder-end .mapboxgl-ctrl-geocoder--icon-search {
+  display: none;
+}
+
+#geocoder-start .mapboxgl-ctrl-geocoder--input,
+#geocoder-end .mapboxgl-ctrl-geocoder--input {
+  padding: 5px 28px 5px 2px;
+  font-size: 14px;
+  height: auto;
+  color: var(--label);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+.mapboxgl-ctrl-geocoder .suggestions {
+  position: absolute !important;
+  z-index: 9999 !important;
+  width: 296px;
+  left: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--separator);
+  overflow: hidden;
+}
+
+#input-divider {
+  height: 1px;
+  background: var(--separator);
+  margin: 3px 0;
+}
+
+/*-- GPS + Swap buttons --*/
+#search-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+#gps-btn,
+#swap-btn {
+  background: var(--blue-light);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background 0.15s;
+}
+#gps-btn:hover,
+#swap-btn:hover {
+  background: #d0e4ff;
+}
+
+/*-- Landmarks section --*/
+#landmarks-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 6px;
+}
+
+.landmark-btn {
+  background: var(--blue-light);
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--blue);
+  cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  white-space: nowrap;
+}
+.landmark-btn:hover {
+  background: var(--blue);
+  color: white;
+}
+
+/*--------------------------------------------------------------------
+Route Panel
+
+Floating panel on the right side of the screen that displays
+available route options and travel information.
+
+Includes route toggles and route details.
+--------------------------------------------------------------------*/
+#route-panel {
+  position: fixed;
+  top: calc(var(--nav-h) + 16px);
+  right: 16px;
+  width: 280px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/*-- Route toggle --*/
+#route-toggle {
+  display: flex;
+  background: var(--bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--separator);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.toggle-btn {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 9px 0;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--secondary);
+  border-right: 1px solid var(--separator);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.toggle-btn:last-child {
+  border-right: none;
+}
+.toggle-btn.active {
+  background: var(--blue);
+  color: white;
+  font-weight: 600;
+}
+.toggle-btn:hover:not(.active) {
+  background: var(--blue-light);
+  color: var(--blue);
+}
+
+/*-- Safety warning --*/
+#safety-warning {
+  background: #fff4e5;
+  border: 1px solid #ffd58a;
+  color: #b25000;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 13px;
+  border-radius: 12px;
+  margin-top: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+/*-- Status --*/
+#status {
+  background: #f2f2f7;
+  border: 1px solid var(--separator);
+  color: var(--secondary);
+  font-size: 13px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  margin-top: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+/*-- Route info --*/
+#info {
+  background: var(--bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 6px 8px;
+  border-radius: var(--card-radius);
+  border: 1px solid var(--separator);
+  box-shadow: var(--shadow);
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+.route-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  padding: 10px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+}
+.route-row:hover {
+  background: #f5f5f7;
+}
+.route-row.active-route {
+  background: var(--blue-light);
+}
+
+.swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.route-row-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.route-time {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--secondary);
+  min-width: 40px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.route-sub {
+  font-size: 12px;
+  color: var(--secondary);
+  padding: 2px 8px 8px 24px;
+  margin-top: 0;
+  text-align: left;
+  line-height: 1.3;
+  word-break: break-word;
+  width: 100%;
+}
+
+/*--------------------------------------------------------------------
+LEGEND (inside left panel)
+--------------------------------------------------------------------*/
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--label);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.legend-circle {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-line {
+  display: inline-block;
+  width: 20px;
+  height: 3px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* Police station and subway toggle */
+.legend-toggle-row {
+  gap: 8px;
+}
+
+.layer-toggle {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.layer-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+.toggle-track {
+  position: absolute;
+  inset: 0;
+  background: var(--tertiary);
+  border-radius: 18px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.toggle-track::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+.layer-toggle input:checked + .toggle-track {
+  background: var(--blue);
+}
+.layer-toggle input:checked + .toggle-track::after {
+  transform: translateX(12px);
+}
+
+/*--------------------------------------------------------------------
+RISK FILTER (slider + dropdown)
+--------------------------------------------------------------------*/
+.risk-slider {
+  width: 100%;
+  margin: 4px 0 2px;
+  accent-color: var(--blue);
+  cursor: pointer;
+  height: 4px;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--tertiary);
+  margin-bottom: 4px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+.slider-value-label {
+  text-align: center;
+  font-size: 11px;
+  color: var(--secondary);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+/* RISK FILTER DROPDOWN */
+.dropdown-wrapper {
+  position: relative;
+  margin-top: 8px;
+}
+
+.risk-dropdown {
+  width: 100%;
+  padding: 10px 36px 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d2d2d2;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+  appearance: none;
+  transition: all 0.2s ease;
+}
+
+.risk-dropdown:hover {
+  border-color: #a0a0a0;
+}
+
+.risk-dropdown:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(66, 204, 197, 0.2);
+}
+
+/* custom arrow for dropdown */
+.dropdown-wrapper::after {
+  content: "▼";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: #666;
+  pointer-events: none;
+}
+
+/*--------------------------------------------------------------------
+HOVER TOOLTIP
+--------------------------------------------------------------------*/
+#hover-tooltip {
+  display: none;
+  position: fixed;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 11px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--separator);
+  box-shadow: var(--shadow-lg);
+  font-size: 13px;
+  pointer-events: none;
+  z-index: 1000;
+  max-width: 200px;
+  border-left: 3px solid #8b1e21;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+#hover-name {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: var(--label);
+  letter-spacing: -0.2px;
+}
+
+#hover-level {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 7px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  display: inline-block;
+  color: white;
+}
+
+#hover-desc {
+  font-size: 12px;
+  color: var(--secondary);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+#hover-compare {
+  font-size: 11px;
+  color: var(--tertiary);
+  border-top: 1px solid var(--separator);
+  padding-top: 6px;
+  margin-top: 2px;
+}
+
+/*--------------------------------------------------------------------
+WELCOME MODAL
+Full-screen modal that appears on first visit to introduce the app.
+Includes app logo, description, data sources, and quick start steps.  
+--------------------------------------------------------------------*/
+#welcome-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+#welcome-box {
+  background: #fff;
+  border-radius: 20px;
+  padding: 36px 40px 28px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+  text-align: center;
+  animation: welcome-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes welcome-in {
+  from {
+    opacity: 0;
+    transform: scale(0.88) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+#welcome-logo-row {
+  margin-bottom: 16px;
+}
+#welcome-logo {
+  height: 160px;
+  width: auto;
+  border-radius: 22px;
+}
+#welcome-subtitle {
+  font-size: 13px;
+  color: #888;
+  margin: 0 0 18px;
+}
+#welcome-sources {
+  text-align: left;
+  background: #f7f7f7;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 0 0 18px;
+}
+#welcome-sources-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: #999;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+#welcome-sources ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+#welcome-sources li {
+  font-size: 12px;
+}
+#welcome-sources a {
+  color: #007aff;
+  text-decoration: none;
+}
+#welcome-sources a:hover {
+  text-decoration: underline;
+}
+#welcome-steps {
+  text-align: left;
+  padding: 0;
+  margin: 0 0 24px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+#welcome-steps li {
+  font-size: 14px;
+  color: #333;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+}
+.step-icon {
+  font-size: 16px;
+  color: #e74c3c;
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+  margin-top: 1px;
+}
+#welcome-btn {
+  width: 100%;
+  padding: 13px;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+  transition: background 0.2s;
+  margin-bottom: 14px;
+}
+#welcome-btn:hover {
+  background: #333;
+}
+#welcome-skip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #aaa;
+  cursor: pointer;
+}
+#welcome-skip input {
+  cursor: pointer;
+}
+
+/*--------------------------------------------------------------------
+LOADING MODAL
+Full-screen modal with spinner that appears during route calculation or data loading.
+--------------------------------------------------------------------*/
+#loading-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loading-box {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  font-size: 16px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ddd;
+  border-top: 4px solid var(--blue);
+  border-radius: 50%;
+  margin: 0 auto 12px auto;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*--------------------------------------------------------------------
+RECENT SEARCHES DROPDOWN
+--------------------------------------------------------------------*/
+#recent-dropdown {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.13);
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+.recent-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #8e8e93;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 10px 14px 4px;
+}
+
+.recent-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.recent-item:hover {
+  background: #f2f2f7;
+}
+
+.recent-name {
+  font-size: 14px;
+  color: #1c1c1e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/*--------------------------------------------------------------------
+COLLAPSIBLE SECTIONS
+--------------------------------------------------------------------*/
+.collapsible-header {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.collapsible-header:hover {
+  color: var(--blue);
+}
+
+.collapse-arrow {
+  font-size: 12px;
+  color: var(--tertiary);
+  transition: transform 0.2s;
+}
+
+.collapsible-header.open .collapse-arrow {
+  transform: rotate(180deg);
+}
+
+.collapsible-body {
+  margin-top: 10px;
+}
