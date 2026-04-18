@@ -34,7 +34,7 @@ mapboxgl.accessToken =
 
 const map = new mapboxgl.Map({
   container: "map",
-  style: "mapbox://styles/mapbox/light-v11",
+  style: "mapbox://styles/mapbox/dark-v11",
   center: [-79.42, 43.72],
   zoom: 10.2,
   bearing: -17,
@@ -608,6 +608,12 @@ startGeocoder.on("result", (e) => {
   getRoute();
 });
 
+startGeocoder.on("clear", () => {
+  startCoords = null;
+  startMarker.remove();
+  clearRoutes();
+});
+
 endGeocoder.on("result", (e) => {
   endCoords = e.result.center;
   saveRecentSearch(
@@ -617,6 +623,12 @@ endGeocoder.on("result", (e) => {
   endMarker.setLngLat(endCoords).addTo(map);
   map.flyTo({ center: endCoords, zoom: Math.max(map.getZoom(), 13) });
   getRoute();
+});
+
+endGeocoder.on("clear", () => {
+  endCoords = null;
+  endMarker.remove();
+  clearRoutes();
 });
 
 /*--------------------------------------------------------------------
@@ -1053,21 +1065,16 @@ function setStatus(msg) {
   }
 }
 
-// Update the incident year filter and refresh routes when the year slider is changed.
-const yearSlider = document.getElementById("year-slider");
-const yearValue = document.getElementById("year-value");
-
-if (yearSlider && yearValue) {
-  yearSlider.addEventListener("input", (e) => {
+// Update the incident year filter and refresh routes when a period radio is selected.
+document.querySelectorAll('input[name="year-period"]').forEach((radio) => {
+  radio.addEventListener("change", (e) => {
     const year = Number(e.target.value);
-
     updateIncidentYear(year);
-
     if (startCoords && endCoords) {
       getRoute();
     }
   });
-}
+});
 
 /*--------------------------------------------------------------------
 RISK LEVEL DROPDOWN

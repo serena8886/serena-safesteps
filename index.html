@@ -120,26 +120,30 @@
         </div>
         <div class="panel-divider"></div>
 
-        <div class="section-label">INCIDENT YEAR RANGE</div>
+        <div class="section-label">DATA PERIOD</div>
 
-        <input
-          type="range"
-          id="year-slider"
-          class="risk-slider"
-          min="2022"
-          max="2024"
-          step="1"
-          value="2022"
-        />
-
-        <div class="slider-labels">
-          <span>2022</span>
-          <span>2023</span>
-          <span>2024</span>
-        </div>
-
-        <div class="slider-value-label">
-          Showing route safety for <span id="year-value">2022 to 2024</span>
+        <div class="year-radio-group">
+          <label class="year-radio-label">
+            <input type="radio" name="year-period" value="2022" checked>
+            <span class="year-radio-btn">
+              <span class="year-radio-title">All years</span>
+              <span class="year-radio-sub">2022 – 2024</span>
+            </span>
+          </label>
+          <label class="year-radio-label">
+            <input type="radio" name="year-period" value="2023">
+            <span class="year-radio-btn">
+              <span class="year-radio-title">Recent</span>
+              <span class="year-radio-sub">2023 – 2024</span>
+            </span>
+          </label>
+          <label class="year-radio-label">
+            <input type="radio" name="year-period" value="2024">
+            <span class="year-radio-btn">
+              <span class="year-radio-title">Latest</span>
+              <span class="year-radio-sub">2024 only</span>
+            </span>
+          </label>
         </div>
       </div>
 
