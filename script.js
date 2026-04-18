@@ -34,7 +34,7 @@ mapboxgl.accessToken =
 
 const map = new mapboxgl.Map({
   container: "map",
-  style: "mapbox://styles/mapbox/dark-v11",
+  style: "mapbox://styles/mapbox/light-v11",
   center: [-79.42, 43.72],
   zoom: 10.2,
   bearing: -17,
@@ -640,14 +640,37 @@ document.getElementById("gps-btn").addEventListener("click", () => {
 
 /*--------------------------------------------------------------------
 LANDMARKS
+Tracks which geocoder input was last focused so landmark clicks fill
+the correct field (start or destination) based on user context.
 --------------------------------------------------------------------*/
+let lastFocusedGeocoder = "end"; // default: landmarks fill destination
+
+// Detect focus after geocoder inputs are rendered (brief delay for Mapbox DOM)
+setTimeout(() => {
+  const startInput = document.querySelector("#geocoder-start input");
+  const endInput   = document.querySelector("#geocoder-end input");
+  if (startInput) startInput.addEventListener("focus", () => { lastFocusedGeocoder = "start"; });
+  if (endInput)   endInput.addEventListener("focus",   () => { lastFocusedGeocoder = "end"; });
+}, 600);
+
 document.querySelectorAll(".landmark-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
-    endCoords = [parseFloat(btn.dataset.lng), parseFloat(btn.dataset.lat)];
-    endMarker.setLngLat(endCoords).addTo(map);
-    const input = document.querySelector("#geocoder-end input");
-    if (input) input.value = btn.textContent.trim();
-    map.flyTo({ center: endCoords, zoom: Math.max(map.getZoom(), 14) });
+    const coords = [parseFloat(btn.dataset.lng), parseFloat(btn.dataset.lat)];
+    const name   = btn.textContent.trim();
+
+    if (lastFocusedGeocoder === "start") {
+      startCoords = coords;
+      startMarker.setLngLat(startCoords).addTo(map);
+      const input = document.querySelector("#geocoder-start input");
+      if (input) input.value = name;
+    } else {
+      endCoords = coords;
+      endMarker.setLngLat(endCoords).addTo(map);
+      const input = document.querySelector("#geocoder-end input");
+      if (input) input.value = name;
+    }
+
+    map.flyTo({ center: coords, zoom: Math.max(map.getZoom(), 14) });
     getRoute();
   });
 });

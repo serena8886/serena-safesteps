@@ -1,33 +1,32 @@
 /*--------------------------------------------------------------------
-DARK EDITION — VARIABLES
+VARIABLES
 --------------------------------------------------------------------*/
 :root {
   --nav-h:       0px;
 
   /* panel surfaces */
-  --panel-bg:    rgba(14, 14, 18, 0.88);
-  --panel-bg-2:  rgba(22, 22, 28, 0.92);
+  --panel-bg:    rgba(255, 255, 255, 0.92);
+  --panel-bg-2:  rgba(255, 255, 255, 0.96);
 
   /* text */
-  --label:       #f2f2f5;
-  --secondary:   rgba(242,242,245,0.52);
-  --tertiary:    rgba(242,242,245,0.28);
+  --label:       #1d1d1f;
+  --secondary:   #6e6e73;
+  --tertiary:    #aeaeb2;
 
   /* borders / separators */
-  --separator:   rgba(255,255,255,0.08);
-  --border-glow: rgba(255,255,255,0.04);
+  --separator:   #e5e5ea;
 
   /* accents */
-  --blue:        #5ac8fa;
-  --blue-dim:    rgba(90,200,250,0.14);
-  --green:       #3cd649;
-  --red:         #ff453a;
-  --amber:       #ffb340;
+  --blue:        #007aff;
+  --blue-dim:    #e8f1ff;
+  --green:       #34c759;
+  --red:         #ff3b30;
+  --amber:       #ff9500;
 
   /* misc */
-  --card-radius: 16px;
-  --shadow:      0 2px 16px rgba(0,0,0,0.40);
-  --shadow-lg:   0 8px 40px rgba(0,0,0,0.56);
+  --card-radius: 14px;
+  --shadow:      0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg:   0 4px 24px rgba(0,0,0,0.11);
 }
 
 /*--------------------------------------------------------------------
@@ -52,28 +51,18 @@ MAP
   width: 100%;
 }
 
-/* dim Mapbox attribution */
-.mapboxgl-ctrl-attrib {
-  background: rgba(0,0,0,0.5) !important;
-  color: rgba(255,255,255,0.35) !important;
-}
-.mapboxgl-ctrl-attrib a { color: rgba(255,255,255,0.35) !important; }
-
 /* zoom / geolocate buttons */
 .mapboxgl-ctrl-group {
   background: var(--panel-bg) !important;
   border: 1px solid var(--separator) !important;
   box-shadow: var(--shadow) !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: 12px !important;
   overflow: hidden;
 }
 .mapboxgl-ctrl-group button {
   background: transparent !important;
-}
-.mapboxgl-ctrl-group button .mapboxgl-ctrl-icon {
-  filter: invert(1) !important;
 }
 .mapboxgl-ctrl-group button + button {
   border-top: 1px solid var(--separator) !important;
@@ -218,16 +207,11 @@ SEARCH CARD
   caret-color: var(--blue);
 }
 
-#geocoder-start .mapboxgl-ctrl-geocoder--input::placeholder,
-#geocoder-end   .mapboxgl-ctrl-geocoder--input::placeholder {
-  color: var(--secondary);
-}
-
 .mapboxgl-ctrl-geocoder .suggestions {
   position: absolute !important;
   z-index: 9999 !important;
   width: 280px; left: 0;
-  background: #1c1c24;
+  background: var(--panel-bg);
   border-radius: 12px;
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--separator);
@@ -238,16 +222,8 @@ SEARCH CARD
 }
 .mapboxgl-ctrl-geocoder .suggestions li a:hover,
 .mapboxgl-ctrl-geocoder .suggestions .active a {
-  background: rgba(255,255,255,0.07) !important;
+  background: rgba(0,0,0,0.05) !important;
   color: var(--label) !important;
-}
-
-/* clear button */
-.mapboxgl-ctrl-geocoder--button {
-  background: transparent !important;
-}
-.mapboxgl-ctrl-geocoder--button svg path {
-  fill: var(--secondary) !important;
 }
 
 #input-divider {
@@ -281,20 +257,20 @@ SEARCH CARD
 }
 
 .landmark-btn {
-  background: rgba(255,255,255,0.07);
-  border: 1px solid var(--separator);
+  background: var(--blue-dim);
+  border: none;
   border-radius: 20px;
   padding: 6px 12px;
   font-size: 12px; font-weight: 500;
-  color: var(--label);
+  color: var(--blue);
   cursor: pointer;
   font-family: inherit;
-  transition: background .15s, border-color .15s;
+  transition: background .15s;
   white-space: nowrap;
 }
 .landmark-btn:hover {
-  background: rgba(255,255,255,0.13);
-  border-color: rgba(255,255,255,0.18);
+  background: var(--blue);
+  color: white;
 }
 
 /*--------------------------------------------------------------------
@@ -498,13 +474,12 @@ RISK FILTER
   padding: 8px 12px;
   border-radius: 10px;
   border: 1px solid var(--separator);
-  background: rgba(255,255,255,0.04);
+  background: rgba(0,0,0,0.03);
   transition: background .15s, border-color .15s;
 }
 
 .year-radio-label:hover .year-radio-btn {
-  background: rgba(255,255,255,0.08);
-  border-color: rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.06);
 }
 
 .year-radio-label input:checked + .year-radio-btn {
@@ -530,22 +505,18 @@ RISK FILTER
   width: 100%;
   padding: 10px 36px 10px 12px;
   border-radius: 10px;
-  border: 1px solid var(--separator);
-  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(0,0,0,0.13);
+  background: white;
   color: var(--label);
   font-size: 14px; cursor: pointer;
   appearance: none; font-family: inherit;
   transition: border-color .2s;
 }
-.risk-dropdown option {
-  background: #1c1c24;
-  color: var(--label);
-}
-.risk-dropdown:hover { border-color: rgba(255,255,255,0.18); }
+.risk-dropdown:hover { border-color: rgba(0,0,0,0.25); }
 .risk-dropdown:focus {
   outline: none;
   border-color: var(--blue);
-  box-shadow: 0 0 0 2px rgba(90,200,250,0.20);
+  box-shadow: 0 0 0 2px rgba(0,122,255,0.15);
 }
 
 .dropdown-wrapper::after {
@@ -562,9 +533,9 @@ HOVER TOOLTIP
 #hover-tooltip {
   display: none;
   position: fixed;
-  background: rgba(20,20,26,0.96);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   padding: 12px 15px;
   border-radius: 14px;
   border: 1px solid var(--separator);
@@ -612,8 +583,7 @@ WELCOME MODAL
 }
 
 #welcome-box {
-  background: #16161e;
-  border: 1px solid var(--separator);
+  background: #ffffff;
   border-radius: 22px;
   padding: 36px 40px 28px;
   max-width: 420px; width: 90%;
@@ -636,8 +606,7 @@ WELCOME MODAL
 
 #welcome-sources {
   text-align: left;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--separator);
+  background: #f7f7f7;
   border-radius: 10px;
   padding: 12px 14px; margin: 0 0 18px;
 }
@@ -706,8 +675,7 @@ LOADING MODAL
 }
 
 .loading-box {
-  background: #16161e;
-  border: 1px solid var(--separator);
+  background: white;
   padding: 30px 40px;
   border-radius: 16px; text-align: center;
   box-shadow: var(--shadow-lg);
@@ -729,8 +697,7 @@ LOADING MODAL
 RECENT SEARCHES
 --------------------------------------------------------------------*/
 #recent-dropdown {
-  background: #1c1c24;
-  border: 1px solid var(--separator);
+  background: white;
   border-radius: 12px;
   box-shadow: var(--shadow-lg);
   overflow: hidden; font-family: inherit;
