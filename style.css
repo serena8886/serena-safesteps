@@ -35,7 +35,7 @@ BASE
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background: #0c0c10;
+  background: #f2f2f7;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
                "Inter", sans-serif;
   color: var(--label);
@@ -310,7 +310,7 @@ ROUTE PANEL — right side
 .toggle-btn:last-child { border-right: none; }
 .toggle-btn.active {
   background: var(--blue);
-  color: #0c0c10;
+  color: #ffffff;
   font-weight: 600;
 }
 .toggle-btn:hover:not(.active) {
@@ -647,7 +647,7 @@ WELCOME MODAL
 
 #welcome-btn {
   width: 100%; padding: 13px;
-  background: var(--label); color: #0c0c10;
+  background: var(--label); color: #ffffff;
   border: none; border-radius: 12px;
   font-size: 15px; font-weight: 700;
   cursor: pointer; letter-spacing: 0.2px;
