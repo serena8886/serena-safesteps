@@ -1043,11 +1043,23 @@ async function getRoute() {
   if (!isSameRoute) {
     safestRoute.geometry.coordinates.forEach((c) => bounds.extend(c));
   }
-  const isMobile = window.innerWidth <= 640;
-  const fitPadding = isMobile
-    ? { top: 160, bottom: 220, left: 24, right: 24 }
-    : 80;
-  map.fitBounds(bounds, { padding: fitPadding });
+
+  requestAnimationFrame(() => {
+    let fitPadding;
+    if (window.innerWidth <= 640) {
+      const controlsBottom = document.getElementById("controls").getBoundingClientRect().bottom;
+      const routePanelHeight = document.getElementById("route-panel").getBoundingClientRect().height;
+      fitPadding = {
+        top: Math.round(controlsBottom) + 20,
+        bottom: Math.round(routePanelHeight) + 20,
+        left: 24,
+        right: 24,
+      };
+    } else {
+      fitPadding = { top: 60, bottom: 60, left: 326, right: 300 };
+    }
+    map.fitBounds(bounds, { padding: fitPadding });
+  });
 }
 
 // Add route display layers for a given route direction (fastest/safest).
