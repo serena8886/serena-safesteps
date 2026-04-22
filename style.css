@@ -737,3 +737,187 @@ COLLAPSIBLE
 }
 .collapsible-header.open .collapse-arrow { transform: rotate(180deg); }
 .collapsible-body { margin-top: 10px; }
+
+/*--------------------------------------------------------------------
+MOBILE FILTERS BUTTON (hidden on desktop)
+--------------------------------------------------------------------*/
+#mobile-filters-btn {
+  display: none;
+}
+
+/*--------------------------------------------------------------------
+MOBILE OVERLAY
+--------------------------------------------------------------------*/
+#mobile-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 15;
+}
+#mobile-overlay.active { display: block; }
+
+/*--------------------------------------------------------------------
+MOBILE LAYOUT  ≤ 640 px
+--------------------------------------------------------------------*/
+@media (max-width: 640px) {
+  /* Search card: full-width sticky bar at top */
+  #controls {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    flex-direction: column;
+    gap: 0;
+    z-index: 20;
+    padding: 10px 12px 0;
+    background: transparent;
+  }
+
+  #search-card {
+    width: 100%;
+    margin-bottom: 8px;
+    border-radius: var(--card-radius);
+  }
+
+  /* Filters toggle button */
+  #mobile-filters-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--separator);
+    border-radius: 20px;
+    padding: 7px 16px;
+    font-size: 13px; font-weight: 600;
+    color: var(--blue);
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    font-family: inherit;
+    margin-bottom: 8px;
+    align-self: flex-start;
+  }
+
+  /* Panel cards: bottom sheet, hidden until mobile-open */
+  #controls .panel-card {
+    display: none;
+  }
+
+  #controls.mobile-open .panel-card {
+    display: block;
+  }
+
+  /* Bottom sheet container when open */
+  #controls.mobile-open {
+    top: auto;
+    bottom: 0;
+    padding: 0;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 20px 20px 0 0;
+    background: var(--panel-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 -4px 30px rgba(0,0,0,0.15);
+    scrollbar-width: none;
+    z-index: 20;
+  }
+  #controls.mobile-open::-webkit-scrollbar { display: none; }
+
+  /* When sheet open, hide search card + filters btn from the sheet */
+  #controls.mobile-open #search-card,
+  #controls.mobile-open #mobile-filters-btn {
+    display: none;
+  }
+
+  /* Sheet drag handle */
+  #controls.mobile-open::before {
+    content: "";
+    display: block;
+    width: 36px; height: 4px;
+    background: var(--tertiary);
+    border-radius: 2px;
+    margin: 12px auto 8px;
+    opacity: 0.5;
+  }
+
+  /* Panel cards in sheet: restore borders, remove rounded block styling */
+  #controls.mobile-open .panel-card {
+    border-left: none; border-right: none;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  #controls.mobile-open .panel-card:first-of-type {
+    border-top: none;
+  }
+
+  /* GPS + Swap buttons: larger tap targets on mobile */
+  #gps-btn, #swap-btn {
+    width: 36px; height: 36px;
+    font-size: 16px;
+  }
+
+  /* Landmark buttons: slightly larger touch target */
+  .landmark-btn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  /* Route panel: full-width card at bottom */
+  #route-panel {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    top: auto;
+    width: 100%;
+    padding: 0 12px 16px;
+    z-index: 10;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  #route-toggle {
+    border-radius: 12px;
+  }
+
+  #info {
+    border-radius: 12px;
+  }
+
+  #safety-warning {
+    border-radius: 12px;
+  }
+
+  /* Mapbox controls: move up a bit so they don't overlap route panel */
+  .mapboxgl-ctrl-bottom-right {
+    bottom: 180px !important;
+  }
+
+  /* Hover tooltip: disable on mobile (use tap) */
+  #hover-tooltip {
+    display: none !important;
+  }
+
+  /* Welcome modal: full screen on small devices */
+  #welcome-box {
+    max-width: 100%;
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    padding: 28px 24px 24px;
+    margin-top: auto;
+    margin-bottom: 0;
+  }
+  #welcome-modal {
+    align-items: flex-end;
+  }
+  #welcome-logo {
+    height: 100px;
+  }
+
+  /* Map: add top padding so search card doesn't cover the map */
+  .map {
+    top: 0;
+  }
+}

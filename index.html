@@ -26,6 +26,9 @@
   </head>
 
   <body>
+    <!-- Mobile: overlay backdrop for filter sheet -->
+    <div id="mobile-overlay"></div>
+
     <!-- ──────────────────────────────────────────────────────────────────
          LEFT SIDEBAR (Controls Panel)
          Contains: search inputs, landmarks, crime risk filter, year range, map layers
@@ -48,6 +51,9 @@
           <button id="swap-btn" title="Swap">&#8693;</button>
         </div>
       </div>
+
+      <!-- Mobile-only: toggle button for filter sheet -->
+      <button id="mobile-filters-btn">&#9776; Filters</button>
 
       <!-- Popular destinations: Quick-access landmark buttons for common Toronto locations -->
       <div class="panel-card">

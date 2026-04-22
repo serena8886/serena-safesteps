@@ -1100,6 +1100,28 @@ document.querySelectorAll('input[name="year-period"]').forEach((radio) => {
 });
 
 /*--------------------------------------------------------------------
+MOBILE FILTER SHEET TOGGLE
+--------------------------------------------------------------------*/
+(function () {
+  const btn = document.getElementById("mobile-filters-btn");
+  const controls = document.getElementById("controls");
+  const overlay = document.getElementById("mobile-overlay");
+
+  function openSheet() {
+    controls.classList.add("mobile-open");
+    overlay.classList.add("active");
+  }
+
+  function closeSheet() {
+    controls.classList.remove("mobile-open");
+    overlay.classList.remove("active");
+  }
+
+  btn.addEventListener("click", openSheet);
+  overlay.addEventListener("click", closeSheet);
+})();
+
+/*--------------------------------------------------------------------
 RISK LEVEL DROPDOWN
 --------------------------------------------------------------------*/
 // Thresholds for crime rate (incidents per 100k) based on city-wide distribution and natural breaks in the data. 
