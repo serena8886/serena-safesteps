@@ -1043,7 +1043,11 @@ async function getRoute() {
   if (!isSameRoute) {
     safestRoute.geometry.coordinates.forEach((c) => bounds.extend(c));
   }
-  map.fitBounds(bounds, { padding: 80 });
+  const isMobile = window.innerWidth <= 640;
+  const fitPadding = isMobile
+    ? { top: 160, bottom: 220, left: 24, right: 24 }
+    : 80;
+  map.fitBounds(bounds, { padding: fitPadding });
 }
 
 // Add route display layers for a given route direction (fastest/safest).
