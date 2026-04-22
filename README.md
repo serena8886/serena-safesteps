@@ -2,8 +2,8 @@
 
 An interactive pedestrian safety map for Toronto, built for GGR472 at the University of Toronto. It helps users, especially tourists,students, night workers navigate the city by comparing the fastest and safest walking routes based on real crime data.
 
-**Live site**: [https://aasthasharma272.github.io/Project-SafeSteps/](https://aasthasharma272.github.io/Project-SafeSteps/)
-
+**Live site**:
+https://serena8886.github.io/serena-safesteps/
 ## Features
 
 - **Route planning** — Enter a start and destination to get walking directions
